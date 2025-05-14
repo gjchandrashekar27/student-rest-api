@@ -1,0 +1,45 @@
+package com.student.student_rest_api.controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.student.student_rest_api.dto.StudentDto;
+import com.student.student_rest_api.entity.Student;
+import com.student.student_rest_api.service.StudentService;
+
+@RestController
+@RequestMapping("/api/v1")
+public class StudentController {
+	
+	@Autowired
+	StudentService studentService;
+	
+	
+	//Send  Only One Student Details At a time.
+	@PostMapping("/student")
+	public ResponseEntity<Student>saveStudent(@RequestBody StudentDto dto){
+		return ResponseEntity.status(HttpStatus.CREATED).body(studentService.saveStudent(dto));
+	}
+	
+	//Send Multiple Students Record At A time.
+	@PostMapping("/students")
+	public ResponseEntity<Object> saveStudents(@RequestBody List<StudentDto> dto){
+		return ResponseEntity.status(HttpStatus.OK).body(studentService.saveStudents(dto));
+	}
+	
+	@GetMapping("/students")
+	public ResponseEntity<List<Student>> fetchStudents(){
+		return ResponseEntity.status(HttpStatus.OK).body(studentService.fetchAll());
+	}
+	
+	
+
+}
