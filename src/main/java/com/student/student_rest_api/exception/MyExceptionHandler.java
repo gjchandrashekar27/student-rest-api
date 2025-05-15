@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+
+//Here You Can Handle All The Exceptions.
 @RestControllerAdvice
 public class MyExceptionHandler {
 	

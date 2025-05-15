@@ -1,16 +1,25 @@
 package com.student.student_rest_api.service;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
+
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Sort;
 
 import com.student.student_rest_api.dto.StudentDto;
 import com.student.student_rest_api.entity.Student;
 import com.student.student_rest_api.exception.DataAlreadyExistsException;
 import com.student.student_rest_api.exception.DataNotFoundException;
 import com.student.student_rest_api.repository.StudentRepository;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 @Service
 public class StudentService {
@@ -46,14 +55,23 @@ public class StudentService {
 	}
 
 	
-    //Fetch All The Records From DataBase. 
-	public List<Student> fetchAll() {
-		List<Student> records = studentRepository.findAll();
-		if(!records.isEmpty()) 
-			return records;
-		else
-			throw new DataNotFoundException();
-		}
+    //Fetch All The Records From DataBase and Sort By Descending Order And Pagination also done.
+	public List<Student> fetchAll(String sort, boolean desc, int page, int size) {
+	    Sort sortBy = Sort.by(sort);
+	    if (desc) {
+	        sortBy = sortBy.descending();
+	    }
+
+	    Pageable pageable = PageRequest.of(page - 1, size, sortBy);
+	    Page<Student> records = studentRepository.findAll(pageable);
+
+	    if (!records.isEmpty()) {
+	        return records.getContent();
+	    } else {
+	        throw new DataNotFoundException("No student records found");
+	    }
+	}
+
  		
 	}
 

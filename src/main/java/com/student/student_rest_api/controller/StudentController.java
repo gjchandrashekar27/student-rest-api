@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.student.student_rest_api.dto.StudentDto;
@@ -35,9 +36,15 @@ public class StudentController {
 		return ResponseEntity.status(HttpStatus.OK).body(studentService.saveStudents(dto));
 	}
 	
+	//Fetch All The Records.
 	@GetMapping("/students")
-	public ResponseEntity<List<Student>> fetchStudents(){
-		return ResponseEntity.status(HttpStatus.OK).body(studentService.fetchAll());
+	public ResponseEntity<List<Student>> fetchStudents(
+			@RequestParam(defaultValue = "id") String sort,
+			@RequestParam(defaultValue = "false") boolean desc,
+			@RequestParam(defaultValue = "1")int page,
+			@RequestParam(defaultValue = "5") int data)
+	{
+		return ResponseEntity.status(HttpStatus.OK).body(studentService.fetchAll(sort,desc,page,data));
 	}
 	
 	
