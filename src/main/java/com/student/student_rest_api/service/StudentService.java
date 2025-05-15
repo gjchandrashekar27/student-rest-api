@@ -2,6 +2,7 @@ package com.student.student_rest_api.service;
 
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,7 @@ import com.student.student_rest_api.repository.StudentRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+
 
 @Service
 public class StudentService {
@@ -70,6 +71,32 @@ public class StudentService {
 	    } else {
 	        throw new DataNotFoundException("No student records found");
 	    }
+	}
+
+	
+	//Edit The Record based On Id.
+	public Object editById(StudentDto dto, Long id) {
+		Student student = studentRepository.findById(id)
+				.orElseThrow(() -> new DataNotFoundException("Student not found"));
+		student.setName(dto.getName());
+		student.setMobile(dto.getMobile());
+		student.setMaths(dto.getMaths());
+		student.setScience(dto.getScience());
+		student.setEnglish(dto.getEnglish());
+		
+		 double percentage = (dto.getMaths() + dto.getScience() + dto.getEnglish()) / 3.0;
+		 
+		student.setPercentage(percentage);
+		return studentRepository.save(student);
+		
+	}
+
+	public Object deleteById(Long id) {
+		Student student = studentRepository.findById(id)
+				.orElseThrow(() -> new DataNotFoundException("Student not found"));
+		studentRepository.delete(student);
+		 return Collections.<String, String>singletonMap ("message", "Deleted student with ID " + id);
+		
 	}
 
  		

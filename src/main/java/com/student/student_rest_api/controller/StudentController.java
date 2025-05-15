@@ -5,8 +5,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -46,6 +49,20 @@ public class StudentController {
 	{
 		return ResponseEntity.status(HttpStatus.OK).body(studentService.fetchAll(sort,desc,page,data));
 	}
+	
+	//Edit The Student Record Based Id.
+	@PutMapping("/student/{id}")
+	public ResponseEntity<Object> editById(@PathVariable Long id,@RequestBody StudentDto dto){
+		return ResponseEntity.status(HttpStatus.OK).body(studentService.editById(dto,id));
+	}
+	
+	//Delete The Student Record Based On Id
+	@DeleteMapping("/student/{id}")
+	public ResponseEntity<Object> deleteById(@PathVariable Long id){
+		return ResponseEntity.status(HttpStatus.OK).body(studentService.deleteById(id));
+	}
+	
+	
 	
 	
 
